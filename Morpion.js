@@ -4,11 +4,11 @@ class Morpion {
     }
 
     defaultGrid() {
-        var empty = '   '
+        this.empty = '   '
         return {
-            "top": [empty, empty, empty],
-            "mid": [empty, empty, empty],
-            "bottom": [empty, empty, empty],
+            "top": [this.empty, this.empty, this.empty],
+            "mid": [this.empty, this.empty, this.empty],
+            "bottom": [this.empty, this.empty, this.empty],
         };
     }
 
@@ -56,13 +56,17 @@ class Morpion {
     insertPosition(position, message) {
         if (message.author.id == this.turn) {
             if (this.turn == this.firstPlayer.id) {
-                console.log("Tour du joueur 1");
-                this.addSign(position, "O");
-                this.turn = this.secondPlayer.id;
+                if(!this.addSign(position, "O")){
+                    message.channel.send("You can't play here.");
+                }else{
+                    this.turn = this.secondPlayer.id;
+                }
             } else {
-                console.log("Tour du joueur 2");
-                this.addSign(position, "X");
-                this.turn = this.firstPlayer.id;
+                if(!this.addSign(position, "X")){
+                    message.channel.send("You can't play here.");
+                }else{
+                    this.turn = this.firstPlayer.id;
+                }
             }
             this.display(message);
         } else {
@@ -71,35 +75,64 @@ class Morpion {
     }
 
     addSign(position, value) {
+        let isAdded = false;
         switch (position) {
             case "11":
-                this.grid['top'][0] = value;
+                if(this.grid['top'][0]==this.empty){
+                    this.grid['top'][0] = value;
+                    isAdded = true;
+                }
                 break;
             case "12":
-                this.grid['top'][1] = value;
+                if( this.grid['top'][1]==this.empty){
+                    this.grid['top'][1] = value;
+                    isAdded = true;
+                }
                 break;
             case "13":
-                this.grid['top'][2] = value;
-                break;
+                if( this.grid['top'][2]==this.empty){
+                    this.grid['top'][2] = value;
+                    isAdded = true;
+                }
+                break;            
             case "21":
-                this.grid['mid'][0] = value;
-                break;
+                if( this.grid['mid'][0]==this.empty){
+                    this.grid['mid'][0] = value;
+                    isAdded = true;
+                }
+                break;  
             case "22":
-                this.grid['mid'][1] = value;
-                break;
+                if( this.grid['mid'][1]==this.empty){
+                    this.grid['mid'][1] = value;
+                    isAdded = true;
+                }
+                break;  
             case "23":
-                this.grid['mid'][2] = value;
-                break;
+                if( this.grid['mid'][2]==this.empty){
+                    this.grid['mid'][2] = value;
+                    isAdded = true;
+                }
+                break; 
             case "31":
-                this.grid['bottom'][0] = value;
-                break;
+                if( this.grid['bottom'][0]==this.empty){
+                    this.grid['bottom'][0] = value;
+                    isAdded = true;
+                }
+                break; 
             case "32":
-                this.grid['bottom'][1] = value;
-                break;
+                if( this.grid['bottom'][1]==this.empty){
+                    this.grid['bottom'][1] = value;
+                    isAdded = true;
+                }
+                break; 
             case "33":
-                this.grid['top'][3] = value;
-                break;
+                if( this.grid['bottom'][2]==this.empty){
+                    this.grid['bottom'][2] = value;
+                    isAdded = true;
+                }
+                break; 
         }
+        return isAdded;
     }
     reset(message=null) {
         this.defaultSigne = 'O';
